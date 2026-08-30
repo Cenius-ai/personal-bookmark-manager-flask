@@ -1,0 +1,579 @@
+/* ==========================================================================
+   LinkChest — Personal Bookmarks Manager
+   Design: editorial, warm-neutral light, hairline system, rounded-lg, no shadow
+   Accent: oklch(0.58 0.16 271) / #5970d8
+   Type: Hanken Grotesk (display + body) with system fallback
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fonts
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   Design tokens
+   -------------------------------------------------------------------------- */
+:root {
+    --accent: oklch(0.58 0.16 271);
+    --accent-hex: #5970d8;
+    --accent-soft: oklch(0.58 0.16 271 / 0.08);
+    --accent-hover: oklch(0.48 0.16 271);
+
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --surface-hover: #f5f3f0;
+
+    --text: #1c1b1a;
+    --text-secondary: #6e6c69;
+    --text-tertiary: #9a9895;
+
+    --border: #e5e3df;
+    --border-light: #f0eeea;
+
+    --danger: #c44;
+    --danger-soft: oklch(0.55 0.18 20 / 0.08);
+
+    --radius-sm: 0.5rem;
+    --radius: 0.75rem;
+    --radius-lg: 0.875rem;
+
+    --hairline: 1px;
+
+    --font-display: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--accent-hex);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+}
+
+/* --------------------------------------------------------------------------
+   App header
+   -------------------------------------------------------------------------- */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-xl);
+    background: var(--surface);
+    border-bottom: var(--hairline) solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+
+.app-logo:hover {
+    color: var(--accent-hex);
+}
+
+.app-nav {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.nav-link {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: color 0.15s, background 0.15s;
+}
+
+.nav-link:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.nav-link.is-active {
+    color: var(--accent-hex);
+}
+
+/* --------------------------------------------------------------------------
+   App main
+   -------------------------------------------------------------------------- */
+.app-main {
+    flex: 1;
+    padding: var(--space-xl);
+}
+
+/* --------------------------------------------------------------------------
+   App footer
+   -------------------------------------------------------------------------- */
+.app-footer {
+    padding: var(--space-md) var(--space-xl);
+    border-top: var(--hairline) solid var(--border);
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+}
+
+/* --------------------------------------------------------------------------
+   Split-pane layout
+   -------------------------------------------------------------------------- */
+.split-pane {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: calc(100vh - 180px);
+}
+
+.pane {
+    padding: var(--space-xl);
+}
+
+.pane-list {
+    border-right: var(--hairline) solid var(--border);
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
+}
+
+.pane-form {
+    background: var(--bg);
+}
+
+.pane-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: var(--space-xs);
+}
+
+.pane-list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+}
+
+.bookmark-count {
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Tag filter chips
+   -------------------------------------------------------------------------- */
+.tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: var(--hairline) solid var(--border-light);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: var(--hairline) solid var(--border);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    background: var(--surface);
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.chip:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-hex);
+}
+
+.chip-active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-hex);
+}
+
+.chip-clear {
+    border-style: dashed;
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+}
+
+.chip-count {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 0 0.35rem;
+    min-width: 1.125rem;
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Bookmark list
+   -------------------------------------------------------------------------- */
+.bookmark-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.bookmark-item {
+    padding: var(--space-md);
+    border: var(--hairline) solid var(--border-light);
+    border-radius: var(--radius);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.bookmark-item:hover {
+    border-color: var(--border);
+}
+
+.bookmark-item.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.bookmark-item-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.bookmark-title-link {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.bookmark-title-link:hover {
+    color: var(--accent-hex);
+}
+
+.bookmark-url {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.bookmark-date {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+}
+
+.bookmark-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+}
+
+.tag-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-hex);
+    transition: background 0.15s;
+}
+
+.tag-badge:hover {
+    background: oklch(0.58 0.16 271 / 0.16);
+}
+
+.tag-badge-lg {
+    font-size: 0.8125rem;
+    padding: 0.2rem 0.75rem;
+}
+
+.bookmark-item-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-light);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    border: var(--hairline) solid transparent;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    line-height: 1.4;
+}
+
+.btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+}
+
+.btn-primary {
+    background: var(--accent-hex);
+    color: #ffffff;
+    border-color: var(--accent-hex);
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+}
+
+.btn-ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+    background: var(--surface-hover);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn-danger-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--danger);
+}
+
+.btn-danger-ghost:hover {
+    background: var(--danger-soft);
+    border-color: var(--danger-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
+.bookmark-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+}
+
+.form-input {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    padding: 0.625rem 0.875rem;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    width: 100%;
+}
+
+.form-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.form-input.is-error {
+    border-color: var(--danger);
+}
+
+.form-input.is-error:focus {
+    box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.form-error {
+    font-size: 0.8125rem;
+    color: var(--danger);
+    font-weight: 500;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    padding-top: var(--space-sm);
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* --------------------------------------------------------------------------
+   Empty state
+   -------------------------------------------------------------------------- */
+.empty-state {
+    padding: var(--space-xl);
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 0.9375rem;
+}
+
+/* --------------------------------------------------------------------------
+   Stats page
+   -------------------------------------------------------------------------- */
+.stats-page {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.stats-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-light);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: var(--hairline) solid var(--border);
+}
+
+.stats-table td {
+    padding: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-light);
+    font-size: 0.9375rem;
+}
+
+.stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+.stats-count-col {
+    text-align: right;
+}
+
+.stats-count {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--accent-hex);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive: stack panes on narrow screens
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .split-pane {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .pane-list {
+        border-right: none;
+        border-bottom: var(--hairline) solid var(--border);
+        max-height: none;
+    }
+
+    .pane-form {
+        background: var(--surface);
+    }
+
+    .app-main {
+        padding: var(--space-md);
+    }
+
+    .app-header {
+        padding: var(--space-md);
+    }
+}
