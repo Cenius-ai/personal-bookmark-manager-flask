@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Stats{% endblock %}
+
+{% block content %}
+<div class="stats-page">
+    <div class="stats-header">
+        <h2 class="pane-title">Tag Statistics</h2>
+        <span class="bookmark-count">{{ all_tags | length }} tag{% if all_tags | length != 1 %}s{% endif %}</span>
+    </div>
+
+    {% if all_tags %}
+    <table class="stats-table">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th class="stats-count-col">Bookmarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in all_tags %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('list_bookmarks', tag=t.name) }}" class="tag-badge tag-badge-lg">{{ t.name }}</a>
+                </td>
+                <td class="stats-count-col">
+                    <span class="stats-count">{{ t.bookmark_count }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <p>No tags yet. Tags appear when you add them to bookmarks.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Bookmarks{% endblock %}
+
+{% block content %}
+<div class="split-pane">
+    {# --- LEFT PANE: Bookmark list + tag filter --- #}
+    <aside class="pane pane-list">
+        <div class="pane-list-header">
+            <h2 class="pane-title">
+                {% if tag_filter %}
+                    Tagged &ldquo;{{ tag_filter }}&rdquo;
+                {% else %}
+                    All Bookmarks
+                {% endif %}
+            </h2>
+            <span class="bookmark-count">{{ bookmarks | length }} bookmark{% if bookmarks | length != 1 %}s{% endif %}</span>
+        </div>
+
+        {# Tag filter chips #}
+        {% if all_tags %}
+        <div class="tag-chips">
+            {% if tag_filter %}
+                <a href="{{ url_for('list_bookmarks') }}" class="chip chip-clear">Clear filter</a>
+            {% endif %}
+            {% for t in all_tags %}
+                <a href="{{ url_for('list_bookmarks', tag=t.name) }}"
+                   class="chip{% if tag_filter == t.name %} chip-active{% endif %}">
+                    {{ t.name }}
+                    <span class="chip-count">{{ t.bookmark_count }}</span>
+                </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {# Bookmark list #}
+        {% if bookmarks %}
+        <ul class="bookmark-list">
+            {% for bm in bookmarks %}
+            <li class="bookmark-item{% if edit_bookmark and edit_bookmark.id == bm.id %} is-selected{% endif %}">
+                <div class="bookmark-item-main">
+                    <a href="{{ bm.url }}" target="_blank" rel="noopener" class="bookmark-title-link">{{ bm.title }}</a>
+                    <span class="bookmark-url">{{ bm.url }}</span>
+                    <span class="bookmark-date">{{ bm.created_at[:10] }}</span>
+                </div>
+                {% if bm.tags %}
+                <div class="bookmark-item-tags">
+                    {% for t in bm.tags %}
+                        <a href="{{ url_for('list_bookmarks', tag=t) }}" class="tag-badge">{{ t }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="bookmark-item-actions">
+                    <a href="{{ url_for('list_bookmarks', edit=bm.id) }}" class="btn btn-sm btn-ghost">Edit</a>
+                    <form method="post" action="{{ url_for('delete_bookmark_route', bookmark_id=bm.id) }}" class="inline-form" onsubmit="return confirm('Delete this bookmark?');">
+                        <button type="submit" class="btn btn-sm btn-danger-ghost">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-state">
+            {% if tag_filter %}
+                <p>No bookmarks tagged &ldquo;{{ tag_filter }}&rdquo;.</p>
+            {% else %}
+                <p>No bookmarks yet. Add your first one using the form.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </aside>
+
+    {# --- RIGHT PANE: Add / Edit form --- #}
+    <section class="pane pane-form">
+        {% if edit_bookmark %}
+            <h2 class="pane-title">Edit Bookmark</h2>
+            <form method="post" action="{{ url_for('edit_bookmark', bookmark_id=edit_bookmark.id) }}" class="bookmark-form">
+        {% else %}
+            <h2 class="pane-title">Add Bookmark</h2>
+            <form method="post" action="{{ url_for('list_bookmarks') }}" class="bookmark-form">
+        {% endif %}
+
+            <div class="form-group">
+                <label for="title" class="form-label">Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    class="form-input{% if title_error %} is-error{% endif %}"
+                    placeholder="e.g. Python docs"
+                    maxlength="500"
+                    required
+                    value="{{ form_data.title if form_data else (edit_bookmark.title if edit_bookmark else '') }}"
+                >
+                {% if title_error %}
+                    <span class="form-error">{{ title_error }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="url" class="form-label">URL</label>
+                <input
+                    type="text"
+                    id="url"
+                    name="url"
+                    class="form-input{% if url_error %} is-error{% endif %}"
+                    placeholder="https://docs.python.org/3/"
+                    maxlength="2048"
+                    required
+                    value="{{ form_data.url if form_data else (edit_bookmark.url if edit_bookmark else '') }}"
+                >
+                {% if url_error %}
+                    <span class="form-error">{{ url_error }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="tags" class="form-label">Tags</label>
+                <input
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    class="form-input"
+                    placeholder="python, reference, docs"
+                    value="{{ form_data.tags if form_data else (edit_bookmark.tags | join(', ') if edit_bookmark else '') }}"
+                >
+                <span class="form-hint">Comma-separated; e.g. &ldquo;python, flask, web&rdquo;</span>
+            </div>
+
+            <div class="form-actions">
+                {% if edit_bookmark %}
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{{ url_for('list_bookmarks') }}" class="btn btn-ghost">Cancel</a>
+                {% else %}
+                    <button type="submit" class="btn btn-primary">Add Bookmark</button>
+                {% endif %}
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

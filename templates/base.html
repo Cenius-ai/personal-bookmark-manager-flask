@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Bookmarks{% endblock %} — LinkChest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="app-header">
+        <a href="{{ url_for('list_bookmarks') }}" class="app-logo">LinkChest</a>
+        <nav class="app-nav">
+            <a href="{{ url_for('list_bookmarks') }}" class="nav-link{% if request.endpoint == 'list_bookmarks' %} is-active{% endif %}">Bookmarks</a>
+            <a href="{{ url_for('stats') }}" class="nav-link{% if request.endpoint == 'stats' %} is-active{% endif %}">Stats</a>
+        </nav>
+    </header>
+
+    <main class="app-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="app-footer">
+        <span>LinkChest &mdash; a personal bookmarks manager</span>
+    </footer>
+</body>
+</html>
