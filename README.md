@@ -90,7 +90,7 @@ See [`INSTALL.md`](INSTALL.md) for full setup and usage instructions.
 
 ## Architecture
 
-Folder layout: `static/`, `templates/`. `install.sh` provisions dependencies and seeds demo data so the app starts with something real to explore. Built in Flask (28 files). Full setup details: [`INSTALL.md`](INSTALL.md).
+Folder layout: `static/`, `templates/`. `install.sh` provisions dependencies and seeds demo data so the app starts with something real to explore. Built in Flask (17 files). Full setup details: [`INSTALL.md`](INSTALL.md).
 
 ## FAQ
 
